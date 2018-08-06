@@ -1,6 +1,6 @@
 {
   "name": "psdetch-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core types, interfaces of psdetch",
   "main": "build/index.js",
   "scripts": {
