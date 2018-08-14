@@ -27,7 +27,9 @@ export class BasicEvents<T extends string, T1, T2 extends (arg?:T1)=>void>{
   }
   once(evt: T, handler: T2): void {
     const wrapper = ((arg: T1) => {
-      this.off(evt, wrapper);
+      setTimeout(()=>{
+        this.off(evt, wrapper);
+      });
       handler(arg);
     }) as T2;
     this.on(evt, wrapper);

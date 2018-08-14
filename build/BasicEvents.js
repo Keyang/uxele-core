@@ -31,7 +31,9 @@ var BasicEvents = /** @class */ (function () {
     BasicEvents.prototype.once = function (evt, handler) {
         var _this = this;
         var wrapper = (function (arg) {
-            _this.off(evt, wrapper);
+            setTimeout(function () {
+                _this.off(evt, wrapper);
+            });
             handler(arg);
         });
         this.on(evt, wrapper);
