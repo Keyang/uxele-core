@@ -14,7 +14,10 @@ export declare abstract class BaseRenderer extends BasicEvents<types.RendererEve
     readonly minY: number;
     readonly maxX: number;
     readonly maxY: number;
+    readonly imgWidth: number;
+    readonly imgHeight: number;
     constructor(ele: HTMLCanvasElement, renderWidth: number, renderHeight: number);
+    mouseEventToCoords(evt: types.IRendererEvent): types.IPoint;
     rendererPointToRealPoint(rendererPoint: types.IPoint): types.IPoint;
     realPointToRendererPoint(realPoint: types.IPoint): types.IPoint;
     getPage(): types.IPage;

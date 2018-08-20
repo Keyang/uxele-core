@@ -109,6 +109,7 @@ export interface ITextLayer extends ILayer {
 }
 export interface IFolderLayer extends ILayer {
   children(): Promise<ILayer[]>;
+  childrenLength: number;
 }
 
 export interface ICanvasConfig {

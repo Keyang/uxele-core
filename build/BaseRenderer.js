@@ -83,10 +83,31 @@ var BaseRenderer = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(BaseRenderer.prototype, "imgWidth", {
+        get: function () {
+            return this.getPage().width * this.zoom();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseRenderer.prototype, "imgHeight", {
+        get: function () {
+            return this.getPage().height * this.zoom();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BaseRenderer.prototype.mouseEventToCoords = function (evt) {
+        var e = evt.e;
+        return {
+            x: e.offsetX,
+            y: e.offsetY
+        };
+    };
     BaseRenderer.prototype.rendererPointToRealPoint = function (rendererPoint) {
         return {
-            x: (rendererPoint.x + this.panX()) / this.zoom(),
-            y: (rendererPoint.y + this.panY()) / this.zoom(),
+            x: Math.min(Math.max(rendererPoint.x + this.panX(), 0), this.imgWidth) / this.zoom(),
+            y: Math.min(Math.max(rendererPoint.y + this.panY(), 0), this.imgHeight) / this.zoom()
         };
     };
     BaseRenderer.prototype.realPointToRendererPoint = function (realPoint) {

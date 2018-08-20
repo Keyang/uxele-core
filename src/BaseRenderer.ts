@@ -21,6 +21,12 @@ export abstract class BaseRenderer extends BasicEvents<types.RendererEvent, type
   get maxY():number{
     return this.getPage().height*this.zoom() - this.renderHeight / 2;
   }
+  get imgWidth(){
+    return this.getPage().width*this.zoom();
+  }
+  get imgHeight(){
+    return this.getPage().height*this.zoom();
+  }
   constructor(
     protected ele: HTMLCanvasElement,
     public renderWidth: number,
@@ -28,10 +34,17 @@ export abstract class BaseRenderer extends BasicEvents<types.RendererEvent, type
   ){
     super();
   }
+  mouseEventToCoords(evt:types.IRendererEvent):types.IPoint{
+    const e=evt.e as MouseEvent;
+    return {
+      x: e.offsetX,
+      y: e.offsetY
+    }
+  }
   rendererPointToRealPoint(rendererPoint: types.IPoint): types.IPoint {
     return {
-      x: (rendererPoint.x + this.panX()) / this.zoom(),
-      y: (rendererPoint.y + this.panY()) / this.zoom(),
+      x: Math.min(Math.max(rendererPoint.x + this.panX(),0),this.imgWidth) / this.zoom(),
+      y: Math.min(Math.max(rendererPoint.y + this.panY(),0),this.imgHeight) / this.zoom()
     };
   }
   realPointToRendererPoint(realPoint: types.IPoint): types.IPoint {
