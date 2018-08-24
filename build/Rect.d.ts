@@ -5,6 +5,17 @@ export interface IRect {
     right: number;
     bottom: number;
 }
+export interface IRectDistance {
+    [key: string]: number;
+    ll: number;
+    lr: number;
+    rr: number;
+    rl: number;
+    tt: number;
+    tb: number;
+    bb: number;
+    bt: number;
+}
 export declare class Rect implements IRect {
     left: number;
     top: number;
@@ -48,7 +59,5 @@ export declare class Rect implements IRect {
     distanceToCoords(x: number, y: number): number;
     includeCoordsMutate(x: number, y: number): void;
     isOverlapTo(t: Rect): boolean;
-    distance(rect: Rect): {
-        [key: string]: number;
-    };
+    distance(rect: Rect): IRectDistance;
 }

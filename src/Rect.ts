@@ -6,6 +6,17 @@ export interface IRect {
   right: number;
   bottom: number;
 }
+export interface IRectDistance{
+  [key : string]:number;
+  ll: number;
+  lr: number;
+  rr: number;
+  rl: number;
+  tt: number;
+  tb: number;
+  bb: number;
+  bt: number;
+}
 export class Rect implements IRect {
   public static fromJson(rectJson: IRect) {
     return new Rect(rectJson.left, rectJson.top, rectJson.right, rectJson.bottom);
@@ -165,7 +176,7 @@ export class Rect implements IRect {
   public distance(rect: Rect) {
     const rect1 = this;
     const rect2 = rect;
-    const rtn: { [key: string]: number } = {
+    const rtn: IRectDistance = {
       ll: 0,
       lr: 0,
       rr: 0,
@@ -175,7 +186,7 @@ export class Rect implements IRect {
       bb: 0,
       bt: 0,
     };
-
+    
     for (const key in rtn) {
       if (rtn.hasOwnProperty(key)) {
         rtn[key] = getDistance(rect1, rect2, key);
