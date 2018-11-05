@@ -133,17 +133,18 @@ export interface IRenderer {
   panY(pixel?: number): number;
   renderPage(page: IPage): Promise<any>;
   on(evt: RendererEvent, handler: RendererEventHandler): void;
-  off(evt?: RendererEvent): void;
+  off(evt?: RendererEvent, handler?: RendererEventHandler): void;
   once(evt: RendererEvent, handler: RendererEventHandler): void;
   destroy(): void;
   rendererPointToRealPoint(rendererPoint: IPoint): IPoint;
   realPointToRendererPoint(realPoint: IPoint): IPoint;
   realRectToRendererRect(realRect: Rect): Rect;
   rendererRectToRealRect(rendererRect: Rect): Rect;
-  getPage(): IPage;
+  getPage(): IPage|undefined;
   setBackground(img?: HTMLImageElement): void;
   draw(param: any,zindex?:RendererDrawZIndex): void;
   clearDrawing(param?:any, zindex?:RendererDrawZIndex): void;
+  mouseEventToCoords(evt:IRendererEvent):IPoint;
 }
 export interface IDrawRectParam {
   color: string;

@@ -1,7 +1,6 @@
 export * from "./types";
 export * from "./Rect";
 export * from "./Progress";
-export * from "./provider";
 import * as _layer from "./layer";
 export const layer = _layer;
 export * from "./ILang";

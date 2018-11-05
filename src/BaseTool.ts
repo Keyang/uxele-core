@@ -1,33 +1,29 @@
-import { BasicEvents } from "./BasicEvents";
-import { CoreProvider } from "./provider";
+// import { BasicEvents } from "./BasicEvents";
+// import { CoreProvider } from "./provider";
 import { IRenderer } from "./types";
-export type BaseToolEvents = "onActivated" | "onDeactivated";
+// export type BaseToolEvents = "onActivated" | "onDeactivated";
 
-export abstract class BaseTool<T extends string, 
-                              T1, 
-                              T2 extends IRenderer> extends BasicEvents<T | BaseToolEvents, T1, (arg?: T1) => void>{
+export abstract class BaseTool {
   public abstract name: string;
   public abstract slug: string;
+  public abstract cls:string;
   public activated: boolean = false;
-  constructor(protected renderer: T2) {
-    super();
+  constructor(protected renderer: IRenderer) {
   }
   protected abstract bindRenderer(): Promise<void>;
   protected abstract unbindRenderer(): Promise<void>;
-  public activate(): void {
-   
+  public activate() {
+
     // renderer.clearDrawing();
-    this.bindRenderer()
+    return this.bindRenderer()
       .then(() => {
-        this.activated=true;
-        this.emit("onActivated");
+        this.activated = true;
       })
   }
-  public  deactivate(): void{
-    this.unbindRenderer()
-    .then(()=>{
-      this.activated=false;
-      this.emit("onDeactivated");
-    })
+  public deactivate() {
+    return this.unbindRenderer()
+      .then(() => {
+        this.activated = false;
+      })
   }
 }

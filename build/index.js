@@ -13,7 +13,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./types"));
 __export(require("./Rect"));
 __export(require("./Progress"));
-__export(require("./provider"));
 var _layer = __importStar(require("./layer"));
 exports.layer = _layer;
 __export(require("./BaseRenderer"));

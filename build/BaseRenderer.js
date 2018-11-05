@@ -117,12 +117,11 @@ var BaseRenderer = /** @class */ (function (_super) {
         };
     };
     BaseRenderer.prototype.getPage = function () {
-        if (this.curPage) {
-            return this.curPage;
-        }
-        else {
-            throw new Error("Not page is rendered.");
-        }
+        return this.curPage;
+        // if (this.curPage) {
+        // } else {
+        //   throw new Error("No page is rendered.");
+        // }
     };
     BaseRenderer.prototype.renderPage = function (page) {
         return __awaiter(this, void 0, void 0, function () {

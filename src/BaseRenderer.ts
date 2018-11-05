@@ -16,16 +16,16 @@ export abstract class BaseRenderer extends BasicEvents<types.RendererEvent, type
     return -this.renderHeight / 2;
   }
   get maxX():number{
-    return this.getPage().width*this.zoom() - this.renderWidth / 2;
+    return this.getPage()!.width*this.zoom() - this.renderWidth / 2;
   }
   get maxY():number{
-    return this.getPage().height*this.zoom() - this.renderHeight / 2;
+    return this.getPage()!.height*this.zoom() - this.renderHeight / 2;
   }
   get imgWidth(){
-    return this.getPage().width*this.zoom();
+    return this.getPage()!.width*this.zoom();
   }
   get imgHeight(){
-    return this.getPage().height*this.zoom();
+    return this.getPage()!.height*this.zoom();
   }
   constructor(
     protected ele: HTMLCanvasElement,
@@ -53,12 +53,13 @@ export abstract class BaseRenderer extends BasicEvents<types.RendererEvent, type
       y: realPoint.y * this.zoom() - this.panY(),
     };
   }
-  getPage(): types.IPage {
-    if (this.curPage) {
-      return this.curPage;
-    } else {
-      throw new Error("Not page is rendered.");
-    }
+  getPage(): types.IPage | undefined {
+    return this.curPage;
+    // if (this.curPage) {
+      
+    // } else {
+    //   throw new Error("No page is rendered.");
+    // }
 
   }
  

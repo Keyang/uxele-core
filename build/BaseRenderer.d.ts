@@ -20,7 +20,7 @@ export declare abstract class BaseRenderer extends BasicEvents<types.RendererEve
     mouseEventToCoords(evt: types.IRendererEvent): types.IPoint;
     rendererPointToRealPoint(rendererPoint: types.IPoint): types.IPoint;
     realPointToRendererPoint(realPoint: types.IPoint): types.IPoint;
-    getPage(): types.IPage;
+    getPage(): types.IPage | undefined;
     abstract zoom(level?: number): number;
     abstract panX(pixel?: number): number;
     abstract panY(pixel?: number): number;
