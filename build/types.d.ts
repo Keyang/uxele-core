@@ -153,3 +153,7 @@ export declare enum LayerType {
     vector = "vector",
     text = "text"
 }
+export interface IExporter {
+    canExport(layer: ILayer): boolean;
+    export(layer: ILayer): Promise<any>;
+}

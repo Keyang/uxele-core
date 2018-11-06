@@ -106,14 +106,14 @@ var BaseRenderer = /** @class */ (function (_super) {
     };
     BaseRenderer.prototype.rendererPointToRealPoint = function (rendererPoint) {
         return {
-            x: Math.min(Math.max(rendererPoint.x + this.panX(), 0), this.imgWidth) / this.zoom(),
-            y: Math.min(Math.max(rendererPoint.y + this.panY(), 0), this.imgHeight) / this.zoom()
+            x: Math.round(Math.min(Math.max(rendererPoint.x + this.panX(), 0), this.imgWidth) / this.zoom()),
+            y: Math.round(Math.min(Math.max(rendererPoint.y + this.panY(), 0), this.imgHeight) / this.zoom())
         };
     };
     BaseRenderer.prototype.realPointToRendererPoint = function (realPoint) {
         return {
-            x: realPoint.x * this.zoom() - this.panX(),
-            y: realPoint.y * this.zoom() - this.panY(),
+            x: Math.round(realPoint.x * this.zoom() - this.panX()),
+            y: Math.round(realPoint.y * this.zoom() - this.panY()),
         };
     };
     BaseRenderer.prototype.getPage = function () {
