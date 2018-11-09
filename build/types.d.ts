@@ -83,6 +83,7 @@ export interface ILayerStyle {
     width?: number;
     height?: number;
     dropShadow?: any;
+    fillColor?: string;
 }
 export interface ILayer {
     name: string;
