@@ -24,4 +24,4 @@ var BaseTool = /** @class */ (function () {
     return BaseTool;
 }());
 exports.BaseTool = BaseTool;
-//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/psdetch-core/src/BaseTool.js.map
+//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/BaseTool.js.map

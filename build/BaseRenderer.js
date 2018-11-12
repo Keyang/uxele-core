@@ -148,4 +148,4 @@ var BaseRenderer = /** @class */ (function (_super) {
     return BaseRenderer;
 }(BasicEvents_1.BasicEvents));
 exports.BaseRenderer = BaseRenderer;
-//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/psdetch-core/src/BaseRenderer.js.map
+//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/BaseRenderer.js.map

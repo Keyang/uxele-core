@@ -68,4 +68,4 @@ var Progress = /** @class */ (function () {
     return Progress;
 }());
 exports.Progress = Progress;
-//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/psdetch-core/src/Progress.js.map
+//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/Progress.js.map

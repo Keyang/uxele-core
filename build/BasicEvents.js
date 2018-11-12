@@ -49,4 +49,4 @@ var BasicEvents = /** @class */ (function () {
     return BasicEvents;
 }());
 exports.BasicEvents = BasicEvents;
-//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/psdetch-core/src/BasicEvents.js.map
+//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/BasicEvents.js.map

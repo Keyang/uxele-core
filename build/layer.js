@@ -117,4 +117,4 @@ function bestLayerByCoords(coords, layers) {
     });
 }
 exports.bestLayerByCoords = bestLayerByCoords;
-//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/psdetch-core/src/layer.js.map
+//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/layer.js.map

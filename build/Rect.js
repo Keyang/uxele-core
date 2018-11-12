@@ -232,4 +232,4 @@ function getDistance(rect1, rect2, mode) {
     var v2 = rect2[e2];
     return Math.abs(v1 - v2);
 }
-//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/psdetch-core/src/Rect.js.map
+//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/Rect.js.map

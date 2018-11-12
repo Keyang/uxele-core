@@ -7,4 +7,4 @@ var LayerType;
     LayerType["vector"] = "vector";
     LayerType["text"] = "text";
 })(LayerType = exports.LayerType || (exports.LayerType = {}));
-//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/psdetch-core/src/types.js.map
+//# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/types.js.map
