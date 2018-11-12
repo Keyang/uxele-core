@@ -1,7 +1,7 @@
 {
-  "name": "psdetch-core",
+  "name": "uxele-core",
   "version": "1.1.0",
-  "description": "Core types, interfaces of psdetch",
+  "description": "Core types, interfaces of uxele",
   "main": "build/index.js",
   "scripts": {
     "test": "karma start",

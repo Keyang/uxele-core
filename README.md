@@ -1,3 +1,5 @@
-# PSDETCH
+# Core
 
-PSDETCH is a free tool that could open any design files for prototyping, inspecting and review. This repo is for v3+.
+This repo defines most of the types / interfaces in uxele.
+
+<TBD>
