@@ -8,14 +8,12 @@
     "test:human": "INTERACTIVE=true karma start",
     "dev": "tsc -w",
     "build": "rm -Rf ./build && tsc && cpx ./src/**/*.js ./build",
-    "dep:local":"echo 'no dep'"
+    "dep:local": "echo 'no dep'"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    
     "typescript": "^2.9.2"
-  
   },
   "dependencies": {}
 }
