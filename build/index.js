@@ -17,5 +17,4 @@ var _layer = __importStar(require("./layer"));
 exports.layer = _layer;
 __export(require("./BaseRenderer"));
 __export(require("./BasicEvents"));
-__export(require("./BaseTool"));
 //# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/index.js.map
