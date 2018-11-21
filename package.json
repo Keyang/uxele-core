@@ -8,7 +8,7 @@
     "test:human": "INTERACTIVE=true karma start",
     "dev": "tsc -w",
     "build": "rm -Rf ./build && tsc && cpx ./src/**/*.js ./build",
-    "dep:local": "echo 'no dep'"
+    "dep:local": "node script/depLocal.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,6 @@
     "cpx": "^1.5.0"
   },
   "dependencies": {
-    
+    "uxele-i18n": "git+https://github.com/uxele/uxele-i18n.git"
   }
 }

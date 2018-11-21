@@ -129,7 +129,7 @@ export interface IRenderer {
     off(evt?: RendererEvent, handler?: RendererEventHandler): void;
     once(evt: RendererEvent, handler: RendererEventHandler): void;
     destroy(): void;
-    rendererPointToRealPoint(rendererPoint: IPoint): IPoint;
+    rendererPointToRealPoint(rendererPoint: IPoint, clamp?: boolean): IPoint;
     realPointToRendererPoint(realPoint: IPoint): IPoint;
     realRectToRendererRect(realRect: Rect): Rect;
     rendererRectToRealRect(rendererRect: Rect): Rect;
@@ -138,6 +138,7 @@ export interface IRenderer {
     draw(param: any, zindex?: RendererDrawZIndex): void;
     clearDrawing(param?: any, zindex?: RendererDrawZIndex): void;
     mouseEventToCoords(evt: IRendererEvent): IPoint;
+    resizeRender(width: number, height: number): void;
 }
 export interface IDrawRectParam {
     color: string;
@@ -155,6 +156,7 @@ export declare enum LayerType {
     text = "text"
 }
 export interface IExporter {
-    canExport(layer: ILayer): boolean;
-    export(layer: ILayer): Promise<any>;
+    name: string;
+    iconCls: string;
+    exportBlob(blob: Blob, name: string): Promise<any>;
 }

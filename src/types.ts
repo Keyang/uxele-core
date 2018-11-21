@@ -89,7 +89,7 @@ export interface ILayerStyle {
   width?: number;
   height?: number;
   dropShadow?: any;
-  fillColor?:string;
+  fillColor?: string;
 }
 export interface ILayer {
   name: string;
@@ -125,10 +125,10 @@ export interface IPoint {
 }
 export type RendererEvent = "mousedown" | "mouseup" | "mousemove" | "click" | "mouseleave";
 export type RendererEventHandler = (e?: IRendererEvent) => void;
-export type RendererDrawZIndex="low" | "normal" | "high";
+export type RendererDrawZIndex = "low" | "normal" | "high";
 export interface IRenderer {
-  renderWidth:number;
-  renderHeight:number;
+  renderWidth: number;
+  renderHeight: number;
   zoom(level?: number): number;
   panX(pixel?: number): number;
   panY(pixel?: number): number;
@@ -137,15 +137,16 @@ export interface IRenderer {
   off(evt?: RendererEvent, handler?: RendererEventHandler): void;
   once(evt: RendererEvent, handler: RendererEventHandler): void;
   destroy(): void;
-  rendererPointToRealPoint(rendererPoint: IPoint): IPoint;
+  rendererPointToRealPoint(rendererPoint: IPoint,clamp?:boolean): IPoint;
   realPointToRendererPoint(realPoint: IPoint): IPoint;
   realRectToRendererRect(realRect: Rect): Rect;
   rendererRectToRealRect(rendererRect: Rect): Rect;
-  getPage(): IPage|undefined;
+  getPage(): IPage | undefined;
   setBackground(img?: HTMLImageElement): void;
-  draw(param: any,zindex?:RendererDrawZIndex): void;
-  clearDrawing(param?:any, zindex?:RendererDrawZIndex): void;
-  mouseEventToCoords(evt:IRendererEvent):IPoint;
+  draw(param: any, zindex?: RendererDrawZIndex): void;
+  clearDrawing(param?: any, zindex?: RendererDrawZIndex): void;
+  mouseEventToCoords(evt: IRendererEvent): IPoint;
+  resizeRender(width:number,height:number):void;
 }
 export interface IDrawRectParam {
   color: string;
@@ -164,7 +165,9 @@ export enum LayerType {
   text = "text",
 }
 
-export interface IExporter{
-  canExport(layer:ILayer):boolean;
-  export(layer:ILayer):Promise<any>;
+export interface IExporter {
+  // name on the menu item. 
+  name:string;
+  iconCls:string;
+  exportBlob(blob:Blob, name: string): Promise<any>;
 }

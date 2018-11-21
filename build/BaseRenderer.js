@@ -53,8 +53,14 @@ var BaseRenderer = /** @class */ (function (_super) {
         _this.ele = ele;
         _this.renderWidth = renderWidth;
         _this.renderHeight = renderHeight;
+        _this.zoomLevel = 1;
         return _this;
     }
+    BaseRenderer.prototype.resizeRender = function (width, height) {
+        this.setCanvasSize(width, height);
+        this.renderWidth = width;
+        this.renderHeight = height;
+    };
     Object.defineProperty(BaseRenderer.prototype, "minX", {
         get: function () {
             return -this.renderWidth / 2;
@@ -104,11 +110,20 @@ var BaseRenderer = /** @class */ (function (_super) {
             y: e.offsetY
         };
     };
-    BaseRenderer.prototype.rendererPointToRealPoint = function (rendererPoint) {
-        return {
-            x: Math.round(Math.min(Math.max(rendererPoint.x + this.panX(), 0), this.imgWidth) / this.zoom()),
-            y: Math.round(Math.min(Math.max(rendererPoint.y + this.panY(), 0), this.imgHeight) / this.zoom())
-        };
+    BaseRenderer.prototype.rendererPointToRealPoint = function (rendererPoint, clamp) {
+        if (clamp === void 0) { clamp = true; }
+        if (clamp) {
+            return {
+                x: Math.round(Math.min(Math.max(rendererPoint.x + this.panX(), 0), this.imgWidth) / this.zoom()),
+                y: Math.round(Math.min(Math.max(rendererPoint.y + this.panY(), 0), this.imgHeight) / this.zoom())
+            };
+        }
+        else {
+            return {
+                x: Math.round((rendererPoint.x + this.panX()) / this.zoom()),
+                y: Math.round((rendererPoint.y + this.panY()) / this.zoom())
+            };
+        }
     };
     BaseRenderer.prototype.realPointToRendererPoint = function (realPoint) {
         return {
@@ -122,6 +137,36 @@ var BaseRenderer = /** @class */ (function (_super) {
         // } else {
         //   throw new Error("No page is rendered.");
         // }
+    };
+    // zoom(level?: number): number {
+    //   if (level !== undefined) {
+    //     const curX = this.panX();
+    //     const curY = this.panY();
+    //     const curZoom = this.zoomLevel;
+    //     this.zoomLevel = level;
+    //     const targetX = curX + this.getPage()!.width * (level - curZoom) / 2;
+    //     const targetY = curY + this.getPage()!.height * (level - curZoom) / 2;
+    //     this.zoomWithoutPan(level)
+    //       .then(() => {
+    //         this.panX(targetX);
+    //         this.panY(targetY);
+    //       })
+    //     return level;
+    //   } else {
+    //     return this.zoomLevel;
+    //   }
+    // }
+    BaseRenderer.prototype.zoom = function (level) {
+        var _this = this;
+        if (level !== undefined) {
+            this.getPage().getPreview(level)
+                .then(function (img) {
+                _this.setBackground(img);
+            });
+            this.zoomLevel = level;
+            return level;
+        }
+        return this.zoomLevel;
     };
     BaseRenderer.prototype.renderPage = function (page) {
         return __awaiter(this, void 0, void 0, function () {

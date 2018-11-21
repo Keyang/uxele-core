@@ -5,8 +5,12 @@ export declare abstract class BaseRenderer extends BasicEvents<types.RendererEve
     protected ele: HTMLCanvasElement;
     renderWidth: number;
     renderHeight: number;
+    resizeRender(width: number, height: number): void;
+    protected abstract setCanvasSize(width: number, height: number): void;
+    protected zoomLevel: number;
     abstract clearDrawing(params?: any, zindex?: types.RendererDrawZIndex): void;
     abstract setBackground(img?: HTMLImageElement | undefined): void;
+    abstract getBackground(): HTMLImageElement | undefined;
     abstract draw(param: any, zindex?: types.RendererDrawZIndex): void;
     private curPage;
     abstract destroy(): void;
@@ -18,10 +22,10 @@ export declare abstract class BaseRenderer extends BasicEvents<types.RendererEve
     readonly imgHeight: number;
     constructor(ele: HTMLCanvasElement, renderWidth: number, renderHeight: number);
     mouseEventToCoords(evt: types.IRendererEvent): types.IPoint;
-    rendererPointToRealPoint(rendererPoint: types.IPoint): types.IPoint;
+    rendererPointToRealPoint(rendererPoint: types.IPoint, clamp?: boolean): types.IPoint;
     realPointToRendererPoint(realPoint: types.IPoint): types.IPoint;
     getPage(): types.IPage | undefined;
-    abstract zoom(level?: number): number;
+    zoom(level?: number): number;
     abstract panX(pixel?: number): number;
     abstract panY(pixel?: number): number;
     renderPage(page: types.IPage): Promise<any>;
