@@ -1,51 +1,83 @@
 import * as types from "./types";
 import { Rect } from "./Rect";
 import { BasicEvents } from "./BasicEvents";
+import { DrawTextOptions, DrawOptions } from "./Renderer";
 
 export abstract class BaseRenderer extends BasicEvents<types.RendererEvent, types.IRendererEvent, types.RendererEventHandler> implements types.IRenderer {
-  resizeRender(width: number, height: number): void {
-    this.setCanvasSize(width, height);
-    this.renderWidth = width;
-    this.renderHeight = height;
-  }
-  protected abstract setCanvasSize(width: number, height: number): void
+
+  abstract draw(options: DrawOptions, group?: any): any;
+  abstract updateDraw(item:any,options: DrawOptions): any;
+  abstract measureText(text: string,options:Partial<DrawTextOptions>): { width: number; height: number; } 
+  abstract realPointToPagePoint(realPoint: types.IPoint, page: types.IPage): types.IPoint;
+  abstract pagePointToRealPoint(pagePoint: types.IPoint, page: types.IPage): types.IPoint;
+  abstract resizeRender(): void
+  abstract pageByRealCoords(coords: types.IPoint): types.IPage | null;
+  abstract removeDrawableGroup(group: any):void;
+  // protected abstract setCanvasSize(width: number, height: number): void
   protected zoomLevel: number = 1;
-  abstract clearDrawing(params?: any, zindex?: types.RendererDrawZIndex): void;
-  abstract setBackground(img?: HTMLImageElement | undefined): void;
-  abstract getBackground(): HTMLImageElement | undefined;
-  abstract draw(param: any, zindex?: types.RendererDrawZIndex): void;
+
+  protected abstract delegateEvents(event: types.RendererEvent, handler: types.RendererEventHandler): void;
   private curPage: types.IPage | undefined;
   abstract destroy(): void;
+  abstract clearDrawing(group?: any): void;
+  abstract getDrawableGroup(): any;
+  get renderWidth() {
+    return this.parent.clientWidth;
+  }
+  get renderHeight() {
+    return this.parent.clientHeight;
+  }
+  /**
+   * The minimum left where user can scroll canvas 
+   */
   get minX(): number {
     return -this.renderWidth / 2;
   }
+  /**
+   * The minimum top where user can scroll canvas 
+   */
   get minY(): number {
     return -this.renderHeight / 2;
   }
+  /**
+   * The max left where user can scroll canvas 
+   */
   get maxX(): number {
-    return this.getPage()!.width * this.zoom() - this.renderWidth / 2;
+    return this.imgWidth - this.renderWidth / 2;
   }
   get maxY(): number {
-    return this.getPage()!.height * this.zoom() - this.renderHeight / 2;
+    return this.imgHeight - this.renderHeight / 2;
   }
-  get imgWidth() {
-    return this.getPage()!.width * this.zoom();
-  }
-  get imgHeight() {
-    return this.getPage()!.height * this.zoom();
-  }
+  /**
+   * the width to whole rendered design file (normally design file width * zoom)
+   */
+  abstract get imgWidth(): number;
+  /**
+   * the height to whole rendered design file (normally design file height * zoom)
+   */
+  abstract get imgHeight(): number;
   constructor(
-    protected ele: HTMLCanvasElement,
-    public renderWidth: number,
-    public renderHeight: number,
+    protected parent: HTMLElement
   ) {
     super();
+    setTimeout(() => {
+      this._delegateEvents();
+    });
+
+  }
+  private _delegateEvents() {
+    types.rendererEvents.forEach((evt) => {
+      this.delegateEvents(evt, (e) => {
+        this.emit(evt, e);
+      })
+    })
   }
   mouseEventToCoords(evt: types.IRendererEvent): types.IPoint {
     const e = evt.e as MouseEvent;
+    const container=this.parent.getBoundingClientRect();
     return {
-      x: e.offsetX,
-      y: e.offsetY
+      x: e.clientX-container.left,
+      y: e.clientY-container.top
     }
   }
   rendererPointToRealPoint(rendererPoint: types.IPoint, clamp: boolean = true): types.IPoint {
@@ -68,15 +100,15 @@ export abstract class BaseRenderer extends BasicEvents<types.RendererEvent, type
       y: Math.round(realPoint.y * this.zoom() - this.panY()),
     };
   }
-  getPage(): types.IPage | undefined {
-    return this.curPage;
-    // if (this.curPage) {
+  // getPage(): types.IPage | undefined {
+  //   return this.curPage;
+  //   // if (this.curPage) {
 
-    // } else {
-    //   throw new Error("No page is rendered.");
-    // }
+  //   // } else {
+  //   //   throw new Error("No page is rendered.");
+  //   // }
 
-  }
+  // }
 
   // zoom(level?: number): number {
   //   if (level !== undefined) {
@@ -96,24 +128,24 @@ export abstract class BaseRenderer extends BasicEvents<types.RendererEvent, type
   //     return this.zoomLevel;
   //   }
   // }
-  zoom(level?: number): number {
-    if (level !== undefined) {
-      this.getPage()!.getPreview(level)
-        .then((img) => {
-          this.setBackground(img);
-        })
-      this.zoomLevel = level;
-      return level
+  abstract zoom(level?: number): number;
+  protected abstract _panX(pixel?: number): number;
+  protected abstract _panY(pixel?: number): number;
+  panX(pixel?: number): number {
+    if (pixel !== undefined) {
+      const clampPixel = Math.min(Math.max(pixel, this.minX), this.maxX);
+      this._panX(clampPixel);
     }
-    return this.zoomLevel;
+    return this._panX();
   }
-  abstract panX(pixel?: number): number;
-  abstract panY(pixel?: number): number;
-  async renderPage(page: types.IPage): Promise<any> {
-    this.curPage = page;
-    const img = await page.getPreview(this.zoom());
-    this.setBackground(img);
+  panY(pixel?: number): number {
+    if (pixel !== undefined) {
+      const clampPixel = Math.min(Math.max(pixel, this.minY), this.maxY);
+      this._panY(clampPixel);
+    }
+    return this._panY();
   }
+  abstract renderPages(pages: types.IPage[]): Promise<any>
   realRectToRendererRect(realRect: Rect): Rect {
     return realRect.pan(-this.panX() / this.zoom(), -this.panY() / this.zoom()).zoom(this.zoom());
   }

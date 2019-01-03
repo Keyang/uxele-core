@@ -9,59 +9,46 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var types = __importStar(require("./types"));
 var BasicEvents_1 = require("./BasicEvents");
 var BaseRenderer = /** @class */ (function (_super) {
     __extends(BaseRenderer, _super);
-    function BaseRenderer(ele, renderWidth, renderHeight) {
+    function BaseRenderer(parent) {
         var _this = _super.call(this) || this;
-        _this.ele = ele;
-        _this.renderWidth = renderWidth;
-        _this.renderHeight = renderHeight;
+        _this.parent = parent;
+        // protected abstract setCanvasSize(width: number, height: number): void
         _this.zoomLevel = 1;
+        setTimeout(function () {
+            _this._delegateEvents();
+        });
         return _this;
     }
-    BaseRenderer.prototype.resizeRender = function (width, height) {
-        this.setCanvasSize(width, height);
-        this.renderWidth = width;
-        this.renderHeight = height;
-    };
+    Object.defineProperty(BaseRenderer.prototype, "renderWidth", {
+        get: function () {
+            return this.parent.clientWidth;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseRenderer.prototype, "renderHeight", {
+        get: function () {
+            return this.parent.clientHeight;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(BaseRenderer.prototype, "minX", {
+        /**
+         * The minimum left where user can scroll canvas
+         */
         get: function () {
             return -this.renderWidth / 2;
         },
@@ -69,6 +56,9 @@ var BaseRenderer = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(BaseRenderer.prototype, "minY", {
+        /**
+         * The minimum top where user can scroll canvas
+         */
         get: function () {
             return -this.renderHeight / 2;
         },
@@ -76,38 +66,36 @@ var BaseRenderer = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(BaseRenderer.prototype, "maxX", {
+        /**
+         * The max left where user can scroll canvas
+         */
         get: function () {
-            return this.getPage().width * this.zoom() - this.renderWidth / 2;
+            return this.imgWidth - this.renderWidth / 2;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(BaseRenderer.prototype, "maxY", {
         get: function () {
-            return this.getPage().height * this.zoom() - this.renderHeight / 2;
+            return this.imgHeight - this.renderHeight / 2;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(BaseRenderer.prototype, "imgWidth", {
-        get: function () {
-            return this.getPage().width * this.zoom();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseRenderer.prototype, "imgHeight", {
-        get: function () {
-            return this.getPage().height * this.zoom();
-        },
-        enumerable: true,
-        configurable: true
-    });
+    BaseRenderer.prototype._delegateEvents = function () {
+        var _this = this;
+        types.rendererEvents.forEach(function (evt) {
+            _this.delegateEvents(evt, function (e) {
+                _this.emit(evt, e);
+            });
+        });
+    };
     BaseRenderer.prototype.mouseEventToCoords = function (evt) {
         var e = evt.e;
+        var container = this.parent.getBoundingClientRect();
         return {
-            x: e.offsetX,
-            y: e.offsetY
+            x: e.clientX - container.left,
+            y: e.clientY - container.top
         };
     };
     BaseRenderer.prototype.rendererPointToRealPoint = function (rendererPoint, clamp) {
@@ -131,58 +119,19 @@ var BaseRenderer = /** @class */ (function (_super) {
             y: Math.round(realPoint.y * this.zoom() - this.panY()),
         };
     };
-    BaseRenderer.prototype.getPage = function () {
-        return this.curPage;
-        // if (this.curPage) {
-        // } else {
-        //   throw new Error("No page is rendered.");
-        // }
-    };
-    // zoom(level?: number): number {
-    //   if (level !== undefined) {
-    //     const curX = this.panX();
-    //     const curY = this.panY();
-    //     const curZoom = this.zoomLevel;
-    //     this.zoomLevel = level;
-    //     const targetX = curX + this.getPage()!.width * (level - curZoom) / 2;
-    //     const targetY = curY + this.getPage()!.height * (level - curZoom) / 2;
-    //     this.zoomWithoutPan(level)
-    //       .then(() => {
-    //         this.panX(targetX);
-    //         this.panY(targetY);
-    //       })
-    //     return level;
-    //   } else {
-    //     return this.zoomLevel;
-    //   }
-    // }
-    BaseRenderer.prototype.zoom = function (level) {
-        var _this = this;
-        if (level !== undefined) {
-            this.getPage().getPreview(level)
-                .then(function (img) {
-                _this.setBackground(img);
-            });
-            this.zoomLevel = level;
-            return level;
+    BaseRenderer.prototype.panX = function (pixel) {
+        if (pixel !== undefined) {
+            var clampPixel = Math.min(Math.max(pixel, this.minX), this.maxX);
+            this._panX(clampPixel);
         }
-        return this.zoomLevel;
+        return this._panX();
     };
-    BaseRenderer.prototype.renderPage = function (page) {
-        return __awaiter(this, void 0, void 0, function () {
-            var img;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.curPage = page;
-                        return [4 /*yield*/, page.getPreview(this.zoom())];
-                    case 1:
-                        img = _a.sent();
-                        this.setBackground(img);
-                        return [2 /*return*/];
-                }
-            });
-        });
+    BaseRenderer.prototype.panY = function (pixel) {
+        if (pixel !== undefined) {
+            var clampPixel = Math.min(Math.max(pixel, this.minY), this.maxY);
+            this._panY(clampPixel);
+        }
+        return this._panY();
     };
     BaseRenderer.prototype.realRectToRendererRect = function (realRect) {
         return realRect.pan(-this.panX() / this.zoom(), -this.panY() / this.zoom()).zoom(this.zoom());

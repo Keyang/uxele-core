@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rendererEvents = ["mousedown", "mouseup", "mousemove", "click", "mouseleave"];
 var LayerType;
 (function (LayerType) {
     LayerType["folder"] = "folder";

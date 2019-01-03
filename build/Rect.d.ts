@@ -31,6 +31,7 @@ export declare class Rect implements IRect {
         x: number;
         y: number;
     };
+    readonly leftTop: IPoint;
     contains(rect: Rect): boolean;
     containsCoords(x: number, y: number): boolean;
     zoom(ratio: number): Rect;
@@ -59,5 +60,6 @@ export declare class Rect implements IRect {
     distanceToCoords(x: number, y: number): number;
     includeCoordsMutate(x: number, y: number): void;
     isOverlapTo(t: Rect): boolean;
+    panTo(newLeftTop: IPoint): Rect;
     distance(rect: Rect): IRectDistance;
 }

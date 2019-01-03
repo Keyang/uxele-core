@@ -56,6 +56,16 @@ var Rect = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Rect.prototype, "leftTop", {
+        get: function () {
+            return {
+                x: this.left,
+                y: this.top
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
     Rect.prototype.contains = function (rect) {
         return this.left <= rect.left && this.top <= rect.top && this.right >= rect.right && this.bottom >= rect.bottom;
     };
@@ -143,6 +153,11 @@ var Rect = /** @class */ (function () {
     };
     Rect.prototype.isOverlapTo = function (t) {
         return this.left < t.right && t.left < this.right && this.top < t.bottom && t.top < this.bottom;
+    };
+    Rect.prototype.panTo = function (newLeftTop) {
+        var offsetX = newLeftTop.x - this.left;
+        var offsetY = newLeftTop.y - this.top;
+        return this.pan(offsetX, offsetY);
     };
     Rect.prototype.distance = function (rect) {
         var rect1 = this;

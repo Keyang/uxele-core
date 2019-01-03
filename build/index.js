@@ -8,4 +8,5 @@ __export(require("./Rect"));
 __export(require("./Progress"));
 __export(require("./BaseRenderer"));
 __export(require("./BasicEvents"));
+__export(require("./Renderer"));
 //# sourceMappingURL=/Users/kxiang/work/projects/psdetch/v3-new/uxele-core/src/index.js.map
